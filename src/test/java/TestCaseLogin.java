@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class SauceDemoTest {
+public class TestCaseLogin {
     WebDriver driver;
 
     @Test
@@ -13,12 +13,19 @@ public class SauceDemoTest {
         driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
 
+        WebElement text_swab = driver.findElement(By.className("login_logo"));
+        String text = text_swab.getText();
+        Assertions.assertEquals("Swag Labs", text);
 
-        WebElement nama = driver.findElement(By.xpath("//input[@id='user-name']"));
+        WebElement nama = driver.findElement(By.name("user-name"));
+        nama.isDisplayed();
+        nama.clear();
         nama.sendKeys("error_user");
-        WebElement pw = driver.findElement(By.id("password"));
+
+        WebElement pw = driver.findElement(By.xpath("//input[@placeholder='Password']"));
         pw.sendKeys("secret_sauce");
-        WebElement btnLogin = driver.findElement(By.id("login-button"));
+
+        WebElement btnLogin = driver.findElement(By.xpath("//input[contains(@value, 'Login')]"));
         btnLogin.click();
 
         String url = driver.getCurrentUrl();
