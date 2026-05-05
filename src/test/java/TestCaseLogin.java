@@ -12,8 +12,8 @@ public class TestCaseLogin {
     public void Positive(){
         driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
-
         WebElement text_swab = driver.findElement(By.className("login_logo"));
+
         String text = text_swab.getText();
         Assertions.assertEquals("Swag Labs", text);
 
@@ -22,7 +22,9 @@ public class TestCaseLogin {
         nama.clear();
         nama.sendKeys("error_user");
 
-        WebElement pw = driver.findElement(By.xpath("//input[@placeholder='Password']"));
+        WebElement pw = driver.findElement(By.xpath("//input[@id='login-button']/preceding-sibling::div[@class='form_group'][1]/input"));
+        pw.isDisplayed();
+        pw.clear();
         pw.sendKeys("secret_sauce");
 
         WebElement btnLogin = driver.findElement(By.xpath("//input[contains(@value, 'Login')]"));
