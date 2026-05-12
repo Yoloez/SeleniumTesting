@@ -17,7 +17,7 @@ public class SearchPage {
     }
 
     public ResultPage submitForm(){
-        driver.findElement(form);
+        driver.findElement(form).click();
         return new ResultPage(driver);
     }
 }

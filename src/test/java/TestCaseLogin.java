@@ -1,54 +1,54 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class TestCaseLogin {
+
     WebDriver driver;
 
     @Test
     public void Positive(){
+
         driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
-        WebElement text_swab = driver.findElement(By.className("login_logo"));
 
-        String text = text_swab.getText();
-        Assertions.assertEquals("Swag Labs", text);
+        LoginPage loginPage = new LoginPage(driver);
+        Assertions.assertEquals(
+                "Swag Labs",
+                loginPage.getLogoText()
+        );
 
-        WebElement nama = driver.findElement(By.name("user-name"));
-        nama.isDisplayed();
-        nama.clear();
-        nama.sendKeys("error_user");
+        loginPage.inputUsername("error_user");
+        loginPage.inputPassword("secret_sauce");
 
-        WebElement pw = driver.findElement(By.xpath("//input[@id='login-button']/preceding-sibling::div[@class='form_group'][1]/input"));
-        pw.isDisplayed();
-        pw.clear();
-        pw.sendKeys("secret_sauce");
+        InventoryPage inventoryPage = loginPage.clickLogin();
 
-        WebElement btnLogin = driver.findElement(By.xpath("//input[contains(@value, 'Login')]"));
-        btnLogin.click();
+        Assertions.assertEquals(
+                "https://www.saucedemo.com/inventory.html",
+                inventoryPage.getCurrentURL()
+        );
 
-        String url = driver.getCurrentUrl();
-        Assertions.assertEquals("https://www.saucedemo.com/inventory.html", url);
+//        driver.quit();
     }
 
     @Test
     public void Negative(){
+
         driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
-        WebElement nama = driver.findElement(By.id("user-name"));
-        nama.sendKeys("error_usersss");
-        WebElement pw = driver.findElement(By.id("password"));
-        pw.sendKeys("secret_sauce");
-        WebElement btnLogin = driver.findElement(By.id("login-button"));
-        btnLogin.click();
 
-        String errorMessage = driver.findElement(By.tagName("h3")).getText();
+        LoginPage loginPage = new LoginPage(driver);
+
+        loginPage.inputUsername("error_usersss");
+        loginPage.inputPassword("secret_sauce");
+        loginPage.clickLogin();
+
         Assertions.assertEquals(
-                "Epic sadface: Username and password do not match any user in this service"
-                ,errorMessage
+                "Epic sadface: Username and password do not match any user in this service",
+                loginPage.getErrorMessage()
         );
+
+        driver.quit();
     }
 }
