@@ -12,7 +12,6 @@ public class SauceDemoTest {
     public void Positive(){
         driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
-
         WebElement nama = driver.findElement(By.xpath("//input[@id='user-name']"));
         nama.sendKeys("error_user");
         WebElement pw = driver.findElement(By.id("password"));
